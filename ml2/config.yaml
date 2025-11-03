@@ -1,0 +1,29 @@
+project_name: "Dacon ML2 Insurance Fraud"
+seed: 42
+cv:
+  n_splits: 5
+  shuffle: true
+  stratify: true
+paths:
+  train_csv: "data/train.csv"
+  test_csv: "data/test.csv"
+  sample_csv: "data/sample_submission.csv"
+  submissions_dir: "submissions"
+  model_dir: "src/models"
+  oof_proba_csv: "submissions/oof_proba.csv"  # optional cache
+model:
+  name: "catboost"
+  params:
+    iterations: 600
+    learning_rate: 0.08
+    depth: 6
+    l2_leaf_reg: 3.0
+    random_strength: 1.0
+    loss_function: "Logloss"
+    eval_metric: "Logloss"
+    auto_class_weights: "Balanced"
+    verbose: 100
+threshold:
+  strategy: "positive_quota"   # "max_f1" or "positive_quota"
+  positive_quota_grid: [1000, 1100, 1200, 1300, 1400, 1500, 1600]
+  default: 0.6
